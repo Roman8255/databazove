@@ -1,0 +1,15 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    padding: 10px;
+  }
+  
+  .grid-item {
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .grid-item img {
+    width: 200px;
+    height: auto; /* Zachová pomer strán obrázku */
+  }
