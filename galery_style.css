@@ -45,3 +45,44 @@ body {
     font-size: 24px;
     cursor: pointer;
 }
+
+.product-image{
+    width: 200px;
+    border-radius: 10px;
+    margin: 5px;
+}
+.product-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: solid 1px black;
+    border-radius: 20px;
+}
+.product-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 10px;
+    margin: 10px;
+
+}
+.product_img_file{
+    width: 50%;
+}
+.product_large{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.product_popis{
+    width: 80vw;
+    display: flex;
+    
+}
+.product_stred{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ flex-direction: column;
+}
