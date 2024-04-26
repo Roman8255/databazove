@@ -20,11 +20,11 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
     }
 
     // Escaping to prevent SQL injection
-    $username = $conn->real_escape_string($_POST['username']);
-    $password = $conn->real_escape_string($_POST['password']);
+    $username2 = $conn->real_escape_string($_POST['username']);
+    $password2 = $conn->real_escape_string($_POST['password']);
 
     // Select user from the database
-    $sql = "SELECT password FROM t_user WHERE username ='$username'";
+    $sql = "SELECT password FROM t_user WHERE username ='$username2'";
     $result = $conn->query($sql);
 
     if ($result) {
@@ -34,7 +34,7 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
             $hashed_password_from_db = $row["password"];
             
             // Verify the password
-            if (password_verify($password, $hashed_password_from_db)) {
+            if (password_verify($password2, $hashed_password_from_db)) {
                 $_SESSION['valid'] = true; //ulozenie session
                 $_SESSION['timeout'] = time();
                 $_SESSION['username'] = $username;

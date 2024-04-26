@@ -11,7 +11,14 @@
 <header>
     <?php include 'header.php'; ?>
 </header>
-
+<form method="GET">
+    <input type="text" name="search" placeholder="Hľadať podľa názvu">
+    <select name="sort">
+        <option value="ASC">Cena: od najnižšej</option>
+        <option value="DESC">Cena: od najvyššej</option>
+    </select>
+    <button type="submit">Filtrovať</button>
+</form>
 <div class="product-container">
     <?php
 
@@ -27,8 +34,15 @@
         die("Connection failed: " . $conn->connect_error);
     }
     // SQL dotaz na získanie všetkých produktov
-    $sql = "SELECT id, `name`, cena, cesta_k_obrazku FROM product";
-    $result = $conn->query($sql);
+    $search = $_GET['search'] ?? '';
+    $sort = $_GET['sort'] ?? 'ASC';  // Default sorting by ascending price
+
+    // Bezpečné použitie parametrov vo výbere SQL
+    $search = "%{$search}%";
+    $sql = $conn->prepare("SELECT id, `name`, cena, cesta_k_obrazku FROM product WHERE `name` LIKE ? ORDER BY cena $sort");
+    $sql->bind_param("s", $search);
+    $sql->execute();
+    $result = $sql->get_result();
 
     // Výpis kariet pre každý produkt
     if ($result->num_rows > 0) {
