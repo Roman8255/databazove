@@ -6,10 +6,7 @@ $error_message = 'Password';
 if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
     //connect string do DB
-    $servername = "localhost";
-    $username = "bednarik3a";
-    $password = "bednarik3a";
-    $dbname = "bednarik3a";
+    include 'config.php';
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -87,6 +84,7 @@ if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['passw
             <form action="register.php" method="post">
                 <input type="text" name="new_username" placeholder="New Username" required><br>
                 <input type="password" name="new_password" placeholder="New Password" required><br>
+                <input type="password" name="confirm_password" placeholder="Confirm Password"required><br>
                 <input type="email" name="email" placeholder="Email" required><br>
                 <input type="submit" name="register" value="Register">
             </form>

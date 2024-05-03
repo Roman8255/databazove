@@ -1,14 +1,10 @@
 <?php
-session_start(); //otvorenie session
+session_start(); // Start the session
 
-//kontrola ci uz bol potvrdeny formular a ci boli vyplnene obidva udaje aj username aj password
-if (isset($_POST['register']) && !empty($_POST['new_username']) && !empty($_POST['new_password']) && !empty($_POST['email'])) {
+// Check if the form was submitted and all required fields are filled
+if (isset($_POST['register']) && !empty($_POST['new_username']) && !empty($_POST['new_password']) && !empty($_POST['confirm_password']) && !empty($_POST['email'])) {
 
-    //connect string do DB
-    $servername = "localhost";
-    $username = "bednarik3a";
-    $password = "bednarik3a";
-    $dbname = "bednarik3a";
+    include 'config.php'; // Include database configuration
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -20,26 +16,37 @@ if (isset($_POST['register']) && !empty($_POST['new_username']) && !empty($_POST
 
     $new_username = $_POST['new_username'];
     $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
     $email = $_POST['email'];
 
-    //kontrola, ci uz neexistuje uzivatel s danym menom
-    $check_sql = "SELECT * FROM t_user WHERE username='$new_username'";
-    $check_result = $conn->query($check_sql);
-
-    if ($check_result->num_rows > 0) {
-        echo "Username already exists!";
+    // Check if the entered passwords match
+    if ($new_password !== $confirm_password) {
+        echo "Passwords do not match!";
     } else {
-        //vlozenie noveho pouzivatela do tabulky
-        $encrypted = password_hash($new_password, PASSWORD_DEFAULT);
-        $insert_sql = "INSERT INTO t_user (username, password, email) VALUES ('$new_username', '$encrypted', '$email')";
-        if ($conn->query($insert_sql) === TRUE) {
-            echo "New user registered successfully!";
-            header('Refresh: 2; URL = login.php');
-        } else {
-            echo "Error: " . $insert_sql . "<br>" . $conn->error;
-        }
-    }
+        // Check if the username already exists
+        $check_sql = "SELECT * FROM t_user WHERE username = ?";
+        $stmt = $conn->prepare($check_sql);
+        $stmt->bind_param("s", $new_username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
+        if ($result->num_rows > 0) {
+            echo "Username already exists!";
+        } else {
+            // Insert the new user into the database
+            $encrypted = password_hash($new_password, PASSWORD_DEFAULT);
+            $insert_sql = "INSERT INTO t_user (username, password, email) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($insert_sql);
+            $stmt->bind_param("sss", $new_username, $encrypted, $email);
+            if ($stmt->execute() === TRUE) {
+                echo "New user registered successfully!";
+                header('Refresh: 2; URL = login.php');
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+        }
+        $stmt->close();
+    }
     $conn->close();
 }
 ?>

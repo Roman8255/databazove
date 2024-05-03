@@ -9,7 +9,7 @@ if (!isset($_SESSION['valid']) || $_SESSION['valid'] !== true) {
 //zistenie ci je session nastavene
 if(isset($_SESSION['username']) ) {
      
-    echo 'Welcome '.$_SESSION['username'].'<br>';
+    
 
     echo 'Click here to <a href = "logout.php" tite = "Logout">logout.';//odkaz na odhlasenie
 }
