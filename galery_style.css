@@ -109,8 +109,16 @@ body {
     filter: drop-shadow(5px 4px 14px #00000046);
     color: rgb(49, 49, 49);
 }
+td{
+min-width: 100px;
+margin-left: 10px;
+}
+tr{
+    width: 100px;
+}
+
 .sidebar {
-    width: 200px;
+    width: 250px;
     background-color: #b1b1b1;
     padding: 10px;
     height: 100vh;  /* Full height */
